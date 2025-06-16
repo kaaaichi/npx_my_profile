@@ -1,0 +1,23 @@
+{
+  "name": "kaaaichi",
+  "version": "1.0.0",
+  "description": "kaaaichi's profile display tool",
+  "main": "index.js",
+  "bin": {
+    "kaaaichi": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "profile",
+    "cli",
+    "bio"
+  ],
+  "author": "kaaaichi",
+  "license": "MIT",
+  "preferGlobal": true,
+  "dependencies": {
+    "chalk": "^4.1.2"
+  }
+}
