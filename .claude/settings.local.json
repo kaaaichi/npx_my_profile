@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(gh label create:*)",
+      "Bash(gh label edit:*)"
     ],
     "deny": []
   }
