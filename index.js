@@ -5,11 +5,11 @@ const chalk = require('chalk');
 const profileData = {
   name: 'kaaaichi',
   github: 'https://github.com/kaaaichi',
-  twitter: 'https://twitter.com/your_twitter',
-  instagram: 'https://instagram.com/your_instagram',
-  podcast: 'Your Podcast Channel',
-  company: 'Your Company',
-  role: 'Your Role'
+  x: 'https://x.com/KaichiWork',
+  instagram: 'https://www.instagram.com/kaaaichi/',
+  podcast: 'ひまじんプログラマーの週末エンジニアリングレッスン',
+  podcastUrl: 'https://open.spotify.com/show/2uv9mONog0nr9q5YJJsvIt',
+  role: 'Work: FullCycle Developer@KAG'
 };
 
 const asciiArt = `
@@ -22,7 +22,7 @@ const asciiArt = `
 `;
 
 function displayProfile() {
-  const cardWidth = 60;
+  const cardWidth = 80;
   const topBorder = '┌' + '─'.repeat(cardWidth - 2) + '┐';
   const bottomBorder = '└' + '─'.repeat(cardWidth - 2) + '┘';
   const emptyLine = '│' + ' '.repeat(cardWidth - 2) + '│';
@@ -32,10 +32,11 @@ function displayProfile() {
     const padding = Math.max(0, cardWidth - 2 - cleanText.length);
     
     if (align === 'left') {
-      return '│ ' + color(text) + ' '.repeat(padding - 1) + '│';
+      const rightPadding = Math.max(0, padding - 1);
+      return '│ ' + color(text) + ' '.repeat(rightPadding) + '│';
     } else {
       const leftPadding = Math.floor(padding / 2);
-      const rightPadding = padding - leftPadding;
+      const rightPadding = Math.max(0, padding - leftPadding);
       return '│' + ' '.repeat(leftPadding) + color(text) + ' '.repeat(rightPadding) + '│';
     }
   }
@@ -44,14 +45,15 @@ function displayProfile() {
   console.log(emptyLine);
   console.log(formatLine(asciiArt.trim(), chalk.cyan));
   console.log(emptyLine);
-  console.log(formatLine(`👋 Hello! I'm ${profileData.name}`, chalk.bold.green, 'left'));
-  console.log(formatLine(`🏢 ${profileData.company} - ${profileData.role}`, chalk.yellow, 'left'));
-  console.log(formatLine(`🐙 ${profileData.github}`, chalk.magenta, 'left'));
-  console.log(formatLine(`🐦 ${profileData.twitter}`, chalk.blue, 'left'));
-  console.log(formatLine(`📸 ${profileData.instagram}`, chalk.red, 'left'));
-  console.log(formatLine(`🎙️ ${profileData.podcast}`, chalk.green, 'left'));
+  console.log(formatLine(`Kaichiro Iida / ${profileData.name}`, chalk.bold.green, 'left'));
   console.log(emptyLine);
-  console.log(formatLine('Thanks for checking out my profile! 🎉', chalk.dim));
+  console.log(formatLine(`Role: ${profileData.role}`, chalk.yellow, 'left'));
+  console.log(formatLine(`GitHub: ${profileData.github}`, chalk.magenta, 'left'));
+  console.log(formatLine(`X: ${profileData.x}`, chalk.blue, 'left'));
+  console.log(formatLine(`Instagram: ${profileData.instagram}`, chalk.red, 'left'));
+  console.log(formatLine(`Podcast: ${profileData.podcastUrl}`, chalk.green, 'left'));
+  console.log(emptyLine);
+  console.log(formatLine('Thanks for checking out my profile!', chalk.dim));
   console.log(emptyLine);
   console.log(chalk.cyan(bottomBorder));
 }
