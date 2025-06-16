@@ -1,0 +1,134 @@
+name: Issue to PR
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  create-fix-pr:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'auto-fix') || contains(github.event.issue.body, '/fix')
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Create fix branch
+        run: |
+          BRANCH_NAME="fix/issue-${{ github.event.issue.number }}"
+          git checkout -b "$BRANCH_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+      
+      - name: Analyze issue and create fix
+        id: fix
+        run: |
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          ISSUE_BODY="${{ github.event.issue.body }}"
+          
+          echo "Issue Title: $ISSUE_TITLE"
+          echo "Issue Body: $ISSUE_BODY"
+          
+          # Here we would call Claude API to analyze the issue and generate fixes
+          # For now, we'll create a simple example fix
+          
+          # Example: If issue mentions "update profile", modify index.js
+          if [[ "$ISSUE_TITLE" == *"profile"* ]] || [[ "$ISSUE_BODY" == *"profile"* ]]; then
+            echo "Profile-related issue detected"
+            # Add a timestamp comment to show the fix was applied
+            echo "// Fixed issue #${{ github.event.issue.number }} - $(date)" >> index.js
+            echo "fix_applied=true" >> $GITHUB_OUTPUT
+            echo "fix_description=Added timestamp comment for issue #${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "Generic issue fix"
+            echo "# Issue Fix" > ISSUE_FIX.md
+            echo "" >> ISSUE_FIX.md
+            echo "This file was created to address issue #${{ github.event.issue.number }}" >> ISSUE_FIX.md
+            echo "" >> ISSUE_FIX.md
+            echo "**Issue Title:** $ISSUE_TITLE" >> ISSUE_FIX.md
+            echo "" >> ISSUE_FIX.md
+            echo "**Issue Description:**" >> ISSUE_FIX.md
+            echo "$ISSUE_BODY" >> ISSUE_FIX.md
+            echo "" >> ISSUE_FIX.md
+            echo "**Fix Applied:** $(date)" >> ISSUE_FIX.md
+            echo "fix_applied=true" >> $GITHUB_OUTPUT
+            echo "fix_description=Created issue fix documentation" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit changes
+        if: steps.fix.outputs.fix_applied == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Fix issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+
+          ${{ steps.fix.outputs.fix_description }}
+          
+          Fixes #${{ github.event.issue.number }}"
+      
+      - name: Push changes
+        if: steps.fix.outputs.fix_applied == 'true'
+        run: |
+          git push origin "$BRANCH_NAME"
+      
+      - name: Create Pull Request
+        if: steps.fix.outputs.fix_applied == 'true'
+        run: |
+          gh pr create \
+            --title "Fix issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}" \
+            --body "$(cat <<'EOF'
+          ## Summary
+          This PR addresses issue #${{ github.event.issue.number }}.
+
+          ## Changes Made
+          ${{ steps.fix.outputs.fix_description }}
+
+          ## Issue Details
+          **Issue:** #${{ github.event.issue.number }}
+          **Title:** ${{ github.event.issue.title }}
+
+          ## Test Plan
+          - [ ] Verify the fix addresses the reported issue
+          - [ ] Test that existing functionality still works
+          - [ ] Check that no new issues are introduced
+
+          Fixes #${{ github.event.issue.number }}
+
+          🤖 Generated with GitHub Actions
+          EOF
+          )" \
+            --head "$BRANCH_NAME" \
+            --base main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Comment on issue
+        if: steps.fix.outputs.fix_applied == 'true'
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "🤖 I've created a pull request to address this issue: [View PR](https://github.com/${{ github.repository }}/pull/$(gh pr list --head $BRANCH_NAME --json number --jq '.[0].number'))"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Add labels to PR
+        if: steps.fix.outputs.fix_applied == 'true'
+        run: |
+          PR_NUMBER=$(gh pr list --head $BRANCH_NAME --json number --jq '.[0].number')
+          gh pr edit $PR_NUMBER --add-label "automated-fix,needs-review"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
