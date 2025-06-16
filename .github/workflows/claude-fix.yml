@@ -14,6 +14,7 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  actions: read
 
 jobs:
   claude-fix:
@@ -168,7 +169,19 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "Claude AI Bot"
-          git add .
+          
+          # Add only specific files, exclude .github/workflows/
+          git add index.js package.json README.md *.md || true
+          git add --ignore-errors . || true
+          git reset HEAD .github/workflows/ 2>/dev/null || true
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "fix_applied=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
           git commit -m "🤖 Claude AI Fix: Issue #${{ steps.issue.outputs.issue_number }}
 
           ${{ steps.claude_fix.outputs.fix_description }}
