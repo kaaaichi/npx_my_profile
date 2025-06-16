@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 質問・サポート
+    url: https://github.com/kaaaichi/npx_my_profile/discussions
+    about: 質問や一般的なサポートについてはDiscussionsをご利用ください
+  - name: 📚 ドキュメント
+    url: https://github.com/kaaaichi/npx_my_profile/blob/main/README.md
+    about: 使用方法についてはREADMEをご確認ください

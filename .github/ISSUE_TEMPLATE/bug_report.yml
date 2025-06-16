@@ -1,0 +1,84 @@
+name: 🐛 バグ報告
+description: バグや問題を報告する
+title: "[Bug] "
+labels: ["bug", "auto-fix"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        バグ報告をしていただき、ありがとうございます。
+        詳細な情報を記入することで、自動修正が適用される可能性があります。
+
+  - type: input
+    id: summary
+    attributes:
+      label: 問題の概要
+      description: 何が問題なのかを簡潔に説明してください
+      placeholder: "例: カードの幅が狭すぎて文字が切れる"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期待される動作
+      description: どのような動作を期待していますか？
+      placeholder: "例: すべてのテキストが正しく表示される"
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 実際の動作
+      description: 実際にはどのような動作をしますか？
+      placeholder: "例: 長いURLが途中で切れて表示される"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 再現手順
+      description: 問題を再現する手順を書いてください
+      placeholder: |
+        1. `node index.js` を実行
+        2. 表示されたカードを確認
+        3. 長いURLが切れていることを確認
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: 影響するコンポーネント
+      description: どの部分に問題がありますか？
+      options:
+        - プロフィール表示
+        - カードレイアウト
+        - 色・スタイル
+        - ASCIIアート
+        - リンク表示
+        - その他
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 環境情報
+      description: 使用している環境について教えてください
+      placeholder: |
+        - OS: macOS 13.0
+        - Node.js: v18.16.0
+        - Terminal: iTerm2
+      render: markdown
+
+  - type: checkboxes
+    id: auto_fix
+    attributes:
+      label: 自動修正
+      description: 自動修正を希望しますか？
+      options:
+        - label: 自動修正を希望する（claude-fixラベルが追加されます）
+          required: false

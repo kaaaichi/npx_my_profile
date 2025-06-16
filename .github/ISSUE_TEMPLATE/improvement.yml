@@ -1,0 +1,98 @@
+name: 🔧 改善提案
+description: コードやドキュメントの改善を提案する
+title: "[Improvement] "
+labels: ["improvement", "claude-fix"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        改善提案をありがとうございます。
+        明確な説明により、自動修正が適用される場合があります。
+
+  - type: input
+    id: improvement_summary
+    attributes:
+      label: 改善内容の概要
+      description: どのような改善を提案しますか？
+      placeholder: "例: カードの幅を広くして長いURLが表示されるようにする"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: improvement_area
+    attributes:
+      label: 改善対象
+      description: どの部分の改善ですか？
+      options:
+        - プロフィール表示
+        - カード幅・レイアウト
+        - 色・スタイル
+        - ASCIIアート
+        - エラーハンドリング
+        - パフォーマンス
+        - コード品質
+        - ドキュメント
+        - その他
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: 現在の状況
+      description: 現在はどのような状況ですか？
+      placeholder: "例: カード幅が80文字でPodcastの長いURLが切れて表示される"
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_improvement
+    attributes:
+      label: 提案する改善内容
+      description: どのように改善すべきか具体的に説明してください
+      placeholder: |
+        例:
+        - カード幅を100文字に拡張
+        - または、長いURLを自動的に短縮表示
+        - レスポンシブに画面幅に合わせて調整
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: 影響度
+      description: この改善の影響はどの程度ですか？
+      options:
+        - 小 - 軽微な改善
+        - 中 - 使いやすさの向上
+        - 大 - 重要な改善
+    validations:
+      required: true
+
+  - type: textarea
+    id: specific_values
+    attributes:
+      label: 具体的な値・設定（任意）
+      description: 具体的な数値や設定値があれば教えてください
+      placeholder: |
+        例:
+        - cardWidth: 80 → 100
+        - 色: blue → green
+        - フォント: normal → bold
+
+  - type: checkboxes
+    id: breaking_change
+    attributes:
+      label: 互換性
+      options:
+        - label: この変更は既存の動作を変更する可能性がある
+          required: false
+
+  - type: checkboxes
+    id: auto_apply
+    attributes:
+      label: 自動適用
+      options:
+        - label: 自動修正を希望する
+          required: false

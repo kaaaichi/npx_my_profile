@@ -1,0 +1,87 @@
+name: ✨ 機能追加リクエスト
+description: 新しい機能や改善を提案する
+title: "[Feature] "
+labels: ["enhancement", "claude-fix"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        機能追加のご提案をありがとうございます。
+        詳細を記入することで、自動実装が適用される可能性があります。
+
+  - type: input
+    id: feature_summary
+    attributes:
+      label: 機能の概要
+      description: 追加したい機能を簡潔に説明してください
+      placeholder: "例: 新しいSNSリンクを追加したい"
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 機能が必要な理由
+      description: なぜこの機能が必要ですか？
+      placeholder: "例: LinkedInのプロフィールも表示したいため"
+    validations:
+      required: true
+
+  - type: textarea
+    id: detailed_description
+    attributes:
+      label: 詳細な説明
+      description: どのような機能を期待していますか？具体的に説明してください
+      placeholder: |
+        例:
+        - LinkedInのURLを追加
+        - プロフィールデータにlinkedin項目を追加
+        - 表示時に適切なアイコンまたはラベルで表示
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature_type
+    attributes:
+      label: 機能のタイプ
+      description: どのような種類の機能ですか？
+      options:
+        - プロフィール情報の追加/変更
+        - 表示スタイルの変更
+        - 新しいリンクの追加
+        - レイアウトの改善
+        - 色・デザインの変更
+        - その他
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation_idea
+    attributes:
+      label: 実装のアイデア（任意）
+      description: 実装方法について何かアイデアがあれば教えてください
+      placeholder: |
+        例:
+        - profileDataオブジェクトにlinkedin: 'https://linkedin.com/in/username'を追加
+        - 表示部分でLinkedIn: ${profileData.linkedin}として表示
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 優先度
+      description: この機能の優先度はどの程度ですか？
+      options:
+        - 低 - あれば便利
+        - 中 - 欲しい機能
+        - 高 - 重要な機能
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: auto_implement
+    attributes:
+      label: 自動実装
+      description: 自動実装を希望しますか？
+      options:
+        - label: 自動実装を希望する（適用可能な場合のみ）
+          required: false
