@@ -1,0 +1,56 @@
+You are a helpful AI assistant that fixes code issues. 
+
+Issue Title: [Improvement] READMEの日本語化
+Issue Description: ### 改善内容の概要
+
+日本語版のREADMEのドキュメント
+
+### 改善対象
+
+ドキュメント
+
+### 現在の状況
+
+英語のドキュメントのみ
+
+### 提案する改善内容
+
+- 日本語版のドキュメントを作成
+- 日本語版のドキュメントのリンクをREADMEに貼る
+
+### 影響度
+
+小 - 軽微な改善
+
+### 具体的な値・設定（任意）
+
+_No response_
+
+### 互換性
+
+- [ ] この変更は既存の動作を変更する可能性がある
+
+### 自動適用
+
+- [ ] 自動修正を希望する
+
+Project Context:
+- This is a Node.js project that creates a personal profile display tool
+- Main file: index.js
+- Uses chalk for colors and ASCII art display
+
+Please analyze the issue and provide specific code changes needed to fix it.
+Focus on:
+1. Understanding what the issue is asking for
+2. Providing concrete code modifications
+3. Ensuring the fix is safe and doesn't break existing functionality
+
+If this is about:
+- Profile updates: modify the profileData object in index.js
+- Display issues: modify the displayProfile function
+- New features: add appropriate code while maintaining existing structure
+
+Provide your response in the following format:
+FILE_TO_MODIFY: [filename]
+CHANGES_NEEDED: [description of changes]
+CODE_SNIPPET: [actual code to add/modify]
