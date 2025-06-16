@@ -58,7 +58,16 @@ jobs:
       
       - name: Create fix branch
         run: |
-          BRANCH_NAME="claude-fix/issue-${{ steps.issue.outputs.issue_number }}"
+          ISSUE_NUMBER="${{ steps.issue.outputs.issue_number }}"
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          BRANCH_NAME="claude-fix/issue-${ISSUE_NUMBER}-${TIMESTAMP}"
+          
+          # Check if branch exists and delete if it does
+          if git ls-remote --exit-code --heads origin "$BRANCH_NAME" >/dev/null 2>&1; then
+            echo "Branch $BRANCH_NAME exists, creating unique branch"
+            BRANCH_NAME="claude-fix/issue-${ISSUE_NUMBER}-${TIMESTAMP}-${GITHUB_RUN_ID}"
+          fi
+          
           git checkout -b "$BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
       
@@ -171,7 +180,8 @@ jobs:
       - name: Push changes
         if: steps.claude_fix.outputs.fix_applied == 'true'
         run: |
-          git push origin "$BRANCH_NAME"
+          # Force push to handle any conflicts
+          git push -u origin "$BRANCH_NAME" || git push --force-with-lease origin "$BRANCH_NAME"
       
       - name: Create Pull Request
         if: steps.claude_fix.outputs.fix_applied == 'true'
