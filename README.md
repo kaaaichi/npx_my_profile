@@ -100,6 +100,26 @@ Label: claude-fix
 Result: Automatic PR updating cardWidth in index.js
 ```
 
+### Setup for Full Automation (Optional)
+
+For automatic PR creation, you can set up a Personal Access Token:
+
+1. **Create a Personal Access Token**:
+   - Go to GitHub Settings > Developer settings > Personal access tokens > Tokens (classic)
+   - Click "Generate new token"
+   - Select scopes: `repo`, `workflow`
+   - Copy the generated token
+
+2. **Add as Repository Secret**:
+   - Go to your repository Settings > Secrets and variables > Actions
+   - Click "New repository secret"
+   - Name: `PAT_TOKEN`
+   - Value: [paste your token]
+
+3. **Benefits**:
+   - Automatic PR creation instead of just branch creation
+   - Full automation without manual intervention
+
 ## License
 
 MIT

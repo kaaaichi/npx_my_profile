@@ -112,11 +112,9 @@ jobs:
       
       - name: Create Pull Request
         if: steps.fix.outputs.fix_applied == 'true'
+        id: create_pr
         run: |
-          gh pr create \
-            --title "Fix issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}" \
-            --body "$(cat <<'EOF'
-          ## Summary
+          PR_BODY="## Summary
           This PR addresses issue #${{ github.event.issue.number }}.
 
           ## Changes Made
@@ -133,25 +131,53 @@ jobs:
 
           Fixes #${{ github.event.issue.number }}
 
-          🤖 Generated with GitHub Actions
-          EOF
-          )" \
-            --head "$BRANCH_NAME" \
-            --base main
+          🤖 Generated with GitHub Actions"
+          
+          # Try creating PR, fallback to comment if failed
+          if [ -n "${{ secrets.PAT_TOKEN }}" ]; then
+            echo "Using PAT token for PR creation"
+            gh pr create \
+              --title "Fix issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}" \
+              --body "$PR_BODY" \
+              --head "$BRANCH_NAME" \
+              --base main \
+              --label "automated-fix,needs-review"
+            echo "pr_created=true" >> $GITHUB_OUTPUT
+          else
+            echo "PAT token not available, will comment on issue instead"
+            echo "pr_created=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+      
+      - name: Comment on issue with PR link
+        if: steps.fix.outputs.fix_applied == 'true' && steps.create_pr.outputs.pr_created == 'true'
+        run: |
+          PR_NUMBER=$(gh pr list --head $BRANCH_NAME --json number --jq '.[0].number' 2>/dev/null || echo "")
+          if [ -n "$PR_NUMBER" ]; then
+            gh issue comment ${{ github.event.issue.number }} --body "🤖 I've created a pull request to address this issue: [View PR](https://github.com/${{ github.repository }}/pull/$PR_NUMBER)"
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Comment on issue
-        if: steps.fix.outputs.fix_applied == 'true'
+      - name: Comment on issue with branch info
+        if: steps.fix.outputs.fix_applied == 'true' && steps.create_pr.outputs.pr_created == 'false'
         run: |
-          gh issue comment ${{ github.event.issue.number }} --body "🤖 I've created a pull request to address this issue: [View PR](https://github.com/${{ github.repository }}/pull/$(gh pr list --head $BRANCH_NAME --json number --jq '.[0].number'))"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Add labels to PR
-        if: steps.fix.outputs.fix_applied == 'true'
-        run: |
-          PR_NUMBER=$(gh pr list --head $BRANCH_NAME --json number --jq '.[0].number')
-          gh pr edit $PR_NUMBER --add-label "automated-fix,needs-review"
+          gh issue comment ${{ github.event.issue.number }} --body "🤖 **I've created a potential fix for this issue!**
+
+          **Changes Made:** ${{ steps.fix.outputs.fix_description }}
+          
+          **Branch:** \`$BRANCH_NAME\`
+          
+          ⚠️ **Note:** Automatic PR creation failed due to permissions. Please:
+          
+          1. Manually create a PR from branch: \`$BRANCH_NAME\`
+          2. Or set up a Personal Access Token (PAT) as \`PAT_TOKEN\` secret for automatic PR creation
+          
+          **To test the fix:**
+          \`\`\`bash
+          git checkout $BRANCH_NAME
+          node index.js
+          \`\`\`"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

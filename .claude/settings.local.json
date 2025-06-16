@@ -3,7 +3,8 @@
     "allow": [
       "Bash(git push:*)",
       "Bash(gh label create:*)",
-      "Bash(gh label edit:*)"
+      "Bash(gh label edit:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }
