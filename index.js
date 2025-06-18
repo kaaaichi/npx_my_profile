@@ -14,7 +14,7 @@ const profileData = {
 
 
 function displayProfile() {
-  const cardWidth = 80;
+  const cardWidth = 68;
   const topBorder = '┌' + '─'.repeat(cardWidth - 2) + '┐';
   const bottomBorder = '└' + '─'.repeat(cardWidth - 2) + '┘';
   const emptyLine = '│' + ' '.repeat(cardWidth - 2) + '│';
@@ -33,19 +33,18 @@ function displayProfile() {
     }
   }
 
-  console.log(chalk.cyan(topBorder));
+  console.log(topBorder);
   console.log(emptyLine);
-  console.log(formatLine('Thanks for checking out my profile!', chalk.dim));
+  console.log(formatLine('Thanks for checking out my profile!', chalk.gray));
+  console.log(formatLine(`Kaichiro Iida / ${profileData.name}`, chalk.bold, 'center'));
   console.log(emptyLine);
-  console.log(formatLine(`Kaichiro Iida / ${profileData.name}`, chalk.bold.green, 'center'));
+  console.log(formatLine(`Work:      ${profileData.role}`, chalk.white, 'left'));
+  console.log(formatLine(`GitHub:    ${profileData.github}`, chalk.white, 'left'));
+  console.log(formatLine(`X:         ${profileData.x}`, chalk.white, 'left'));
+  console.log(formatLine(`Instagram: ${profileData.instagram}`, chalk.white, 'left'));
+  console.log(formatLine(`Podcast:   ${profileData.podcastUrl}`, chalk.white, 'left'));
   console.log(emptyLine);
-  console.log(formatLine(`Role:      ${profileData.role}`, chalk.yellow, 'left'));
-  console.log(formatLine(`GitHub:    ${profileData.github}`, chalk.magenta, 'left'));
-  console.log(formatLine(`X:         ${profileData.x}`, chalk.blue, 'left'));
-  console.log(formatLine(`Instagram: ${profileData.instagram}`, chalk.red, 'left'));
-  console.log(formatLine(`Podcast:   ${profileData.podcastUrl}`, chalk.green, 'left'));
-  console.log(emptyLine);
-  console.log(chalk.cyan(bottomBorder));
+  console.log(bottomBorder);
 }
 
 displayProfile();
