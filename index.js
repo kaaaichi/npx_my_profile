@@ -9,17 +9,9 @@ const profileData = {
   instagram: 'https://www.instagram.com/kaaaichi/',
   podcast: 'ひまじんプログラマーの週末エンジニアリングレッスン',
   podcastUrl: 'https://open.spotify.com/show/2uv9mONog0nr9q5YJJsvIt',
-  role: 'Work: FullCycle Developer@KAG'
+  role: 'FullCycle Developer@KAG'
 };
 
-const asciiArt = `
- ██╗  ██╗ █████╗  █████╗  █████╗  ██╗ ██████╗██╗  ██╗██╗
- ██║ ██╔╝██╔══██╗██╔══██╗██╔══██╗██║██╔════╝██║  ██║██║
- █████╔╝ ███████║███████║███████║██║██║     ███████║██║
- ██╔═██╗ ██╔══██║██╔══██║██╔══██║██║██║     ██╔══██║██║
- ██║  ██╗██║  ██║██║  ██║██║  ██║██║╚██████╗██║  ██║██║
- ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝
-`;
 
 function displayProfile() {
   const cardWidth = 80;
@@ -43,17 +35,15 @@ function displayProfile() {
 
   console.log(chalk.cyan(topBorder));
   console.log(emptyLine);
-  console.log(formatLine(asciiArt.trim(), chalk.cyan));
-  console.log(emptyLine);
-  console.log(formatLine(`Kaichiro Iida / ${profileData.name}`, chalk.bold.green, 'left'));
-  console.log(emptyLine);
-  console.log(formatLine(`Role: ${profileData.role}`, chalk.yellow, 'left'));
-  console.log(formatLine(`GitHub: ${profileData.github}`, chalk.magenta, 'left'));
-  console.log(formatLine(`X: ${profileData.x}`, chalk.blue, 'left'));
-  console.log(formatLine(`Instagram: ${profileData.instagram}`, chalk.red, 'left'));
-  console.log(formatLine(`Podcast: ${profileData.podcastUrl}`, chalk.green, 'left'));
-  console.log(emptyLine);
   console.log(formatLine('Thanks for checking out my profile!', chalk.dim));
+  console.log(emptyLine);
+  console.log(formatLine(`Kaichiro Iida / ${profileData.name}`, chalk.bold.green, 'center'));
+  console.log(emptyLine);
+  console.log(formatLine(`Role:      ${profileData.role}`, chalk.yellow, 'left'));
+  console.log(formatLine(`GitHub:    ${profileData.github}`, chalk.magenta, 'left'));
+  console.log(formatLine(`X:         ${profileData.x}`, chalk.blue, 'left'));
+  console.log(formatLine(`Instagram: ${profileData.instagram}`, chalk.red, 'left'));
+  console.log(formatLine(`Podcast:   ${profileData.podcastUrl}`, chalk.green, 'left'));
   console.log(emptyLine);
   console.log(chalk.cyan(bottomBorder));
 }
