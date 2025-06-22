@@ -1,0 +1,24 @@
+name: PR Review
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run PR Agent Review
+        uses: kaaaichi/common-github-actions/.github/actions/pr-agent@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          language: 'javascript'
+          framework: 'node'
+          coding_standards: |
+            - プロフィール表示CLIツールの規約に従う
+            - ES6+の記法を使用
+            - コンソール出力は見やすい形式で統一
+          additional_instructions: |
+            - CLIツールとしての使いやすさを重視
+            - パッケージサイズの最適化を考慮
