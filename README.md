@@ -113,7 +113,7 @@ For automatic PR creation, you can set up a Personal Access Token:
 2. **Add as Repository Secret**:
    - Go to your repository Settings > Secrets and variables > Actions
    - Click "New repository secret"
-   - Name: `PAT_TOKEN`
+   - Name: `PERSONAL_ACCESS_TOKEN`
    - Value: [paste your token]
 
 3. **Benefits**:
